@@ -4,12 +4,13 @@ Welcome to the Jaffle Shop Data Engineering Tech Test! This document outlines a 
 
 **Target Roles:** Data Engineer, Senior Data Engineer
 
-**Time Estimate:** 5-7 hours for intermediate candidates, 3-4 hours for senior candidates
+**Time Estimate:** 3-5 hours
 
 **Prerequisites:**
 - Familiarity with dbt and SQL
 - Understanding of data modeling concepts
 - Comfort with command-line tools and Git
+- A visualsation tool like PowerBI
 
 ---
 
@@ -72,88 +73,78 @@ The raw seed data contains intentional duplicates to simulate real-world data qu
 
 **Difficulty:** Beginner-Intermediate
 
-**Objective:** Extract and validate data using regular expressions
+**Objective:** Extract data using regular expressions (to be unit tested later)
 
 **Background:**
-Product SKUs follow a pattern: `[CATEGORY]-[NUMBER]` (e.g., `JAF-001`, `BEV-002`). The product descriptions contain various formats of information that need to be extracted.
+Product SKUs follow a pattern: `[CATEGORY]-[NUMBER]` (e.g., `JAF-001`, `BEV-002`). You need to extract these components for downstream analysis.
 
 **Task:**
 1. **Create a new model:** `models/staging/stg_products_parsed.sql`
    - Extract the category from the SKU using regex (JAF, BEV, etc.) Duckdb has regex functions
    - Extract the numeric portion from the SKU
 
-2. **Add validation:**
-   - Use `accepted_values` test for category field
-   - Validate that numeric SKU is always 3 digits using regex in a custom test or query
-
-3. **Bonus Challenge:**
-   - Identify products with specific keywords in descriptions (e.g., "ghost pepper", "organic")
-   - Create a product classification (Premium, Standard, Beverage) based on pattern matching
-
 **Expected Output:**
-- Parsed product model with extracted categories and ingredients
-- Working YAML tests validating extracted values
+- Parsed product model with extracted categories and numbers
 - Comments explaining regex patterns used
+- (Note: You will add Unit Tests for this logic in Challenge 3.2)
 
 ---
 
 # LEVEL 2: ARCHITECTURE & ADVANCED dbt (Medallion Pattern)
 
-## Challenge 2.1: Medallion Architecture Implementation
+## Challenge 2.1: Medallion Architecture & Project Tagging
 
 **Difficulty:** Intermediate
 
-**Objective:** Restructure the project to follow the Medallion architecture with proper model tagging
+**Objective:** Configure the project for Medallion architecture using `dbt_project.yml` configuration
 
 **Background:**
-The current project has staging and marts layers, but they need to be reorganized into an explicit Bronze → Silver → Gold medallion pattern with proper governance tags.
+We want to enforce a Bronze/Silver/Gold structure. Instead of manually tagging every model, we want to use dbt's folder-level configuration to apply tags automatically.
 
 **Task:**
-1. **Restructure the folder hierarchy:**
+1. **Create folder structure:**
+   - Ensure `models/bronze`, `models/silver`, and `models/gold` exist.
 
-2. **Migrate existing models:**
-   - Move current models and add tagging for the layer
+2. **Configure `dbt_project.yml`:**
+   - Configure the project so that any model inside `models/bronze` automatically gets the tag `bronze`.
+   - Do the same for `silver` and `gold`.
 
-3. **Test the architecture:**
-   - Run dbt models for each layer using the tags
+3. **Migrate a sample:**
+   - Move `stg_orders_deduplicated` (from Challenge 1.1) to the `silver` folder (rename/refactor as needed to fit the layer, e.g., `silver_orders`).
+   - Verify it inherits the `silver` tag automatically by running `dbt run --select tag:silver`.
+   - Move the marts models to the `gold` folder
+   - Verify they inherits the `gold` tag automatically by running `dbt run --select tag:gold`.
 
 **Expected Output:**
-- Reorganized model folders following medallion pattern
-- Updated dbt_project.yml with layer configurations
-- All models execute without errors
+- Updated `dbt_project.yml` with folder-level tag configuration
+- At least one model in Silver/Gold layers demonstrating the auto-tagging
 - Ability to build by layer using tag selectors
 
 ---
 
-## Challenge 2.2: Multiple Materializations
+## Challenge 2.2: Incremental Materialization
 
 **Difficulty:** Intermediate
 
-**Objective:** Implement models using different dbt materializations for specific use cases
+**Objective:** Implement an incremental model for efficiency
 
 **Background:**
-Different model purposes require different materialization strategies. Understanding when to use views, tables, ephemeral models, and incremental models is crucial for optimization.
+As data grows, full refreshes become too slow. We need to process only new or changed records.
 
 **Task:**
 
-1. **Create models with specific materializations:**
+1. **Create an incremental model:** `models/silver/silver_orders_incremental.sql`
+   - Base this on your orders data.
+   - Configure it as `materialized='incremental'`.
+   - Define a `unique_key` to handle updates.
+   - Implement the `is_incremental()` logic to filter for new records (e.g., based on order date or ingestion time).
 
-   a. Ensure we have an example of each of the 4 main materializations in the dbt project.
-      - For an incremental mode ensure we can process only new/changed orders and define unique_key and strategy
-
-1. **Document materialization choices:**
-   - Add comments to each model explaining why that materialization was chosen
-   - Include performance considerations
-
-2. **Test the models:**
-   - Verify all materializations work correctly
-   - Run `dbt run` and check that schemas contain expected objects (tables vs views)
-   - Verify ephemeral model is compiled into its dependents
+2. **Document:**
+   - Add comments explaining your incremental strategy (how you handle late-arriving data or updates).
 
 **Expected Output:**
-- Four models using different materializations
-- Model YAML with configuration documentation
-- Comments explaining materialization strategy
+- One working incremental model
+- Correct `is_incremental()` logic
 - All tests passing
 
 ---
@@ -184,14 +175,9 @@ Your organization requires surrogate keys that are human-readable and debuggable
    - Use the macro to generate `customer_product_key` from `[customer_id, product_id]`
 
 3. **Add error handling:**
-   - Macro should raise an error if no columns are provided
-   - Macro should handle edge cases (empty strings, special characters)
+   - Macro should handle edge cases (empty strings)
 
-4. **Document the macro:**
-   - Include Jinja comments explaining parameters and usage
-   - Provide example outputs
-
-5. **Test:**
+4. **Test:**
    - Create a test that validates surrogate keys are consistent (same inputs = same output)
    - Test that different inputs produce different keys
 
@@ -231,86 +217,38 @@ Data contracts ensure that downstream consumers (BI tools, APIs) have guaranteed
 
 ---
 
-## Challenge 3.2: Unit Tests for Business Logic
+## Challenge 3.2: Unit Tests for Logic
 
-**Difficulty:** Intermediate-Advanced
+**Difficulty:** Advanced
 
-**Objective:** Add dbt unit tests to validate complex business logic
+**Objective:** Add dbt unit tests to validate your Regex parsing logic
 
 **Background:**
-The project has existing unit tests for some models. Unit tests verify individual model logic without external dependencies, making them fast and reliable.
+In Challenge 1.2, you wrote regex to parse SKUs. Now, we need to guarantee this logic works for various edge cases using dbt's Unit Testing framework (available in dbt Core 1.8+).
 
 **Task:**
 
-1. **Create a new model with business logic:** `int_customer_segment.sql`
-   - Segment customers into tiers based on lifetime value:
-     - Gold: lifetime_value >= $10,000
-     - Silver: lifetime_value >= $5,000 and < $10,000
-     - Bronze: lifetime_value < $5,000
-   - Include order frequency metric (orders_count)
-   - Calculate churn risk (no orders in last 90 days)
+1. **Add Unit Tests to `stg_products_parsed`:**
+   - Define a unit test in your `schema.yml` (or `models.yml`).
+   - **Mock inputs:** Create a few mock rows for `raw_products` (or the upstream source).
+     - Case 1: Standard SKU (e.g., 'JAF-001') -> Expect Category 'JAF', Number '001'
+     - Case 2: Different length (e.g., 'BEV-10') -> Expect Category 'BEV', Number '10'
+     - Case 3: Edge case (e.g., 'FOOD-999')
+   - **Expect output:** Define what the columns should look like after parsing.
 
-2. **Create unit tests in model YAML:**
-   - Test case 1: Customer with high lifetime value should be Gold tier
-   - Test case 2: Customer with no orders should be Bronze tier
-   - Test case 3: Customer with recent order should not be marked as churned
-   - Test case 4: Null lifetime_value should be handled gracefully
-
-3. **Test edge cases:**
-   - NULL values
-   - Boundary conditions (exactly $10,000)
-   - Missing data
-   - Zero orders
-
-4. **Run the unit tests:**
-   - Execute: `dbt test --select model_name,test_type:unit`
-   - Verify all tests pass
-
-5. **Document the logic:**
-   - Add SQL comments explaining segmentation thresholds
-   - Note: Why those thresholds? What business rules drive them?
+2. **Run the unit tests:**
+   - Execute: `dbt test --select stg_products_parsed,test_type:unit`
+   - Verify all tests pass.
 
 **Expected Output:**
-- Model with segmentation logic
-- 4+ unit tests in YAML
-- All tests passing
-- Documentation of business rules
+- Unit test definition in YAML
+- Passing tests verifying your regex logic
 
 ---
 
 # LEVEL 4: ADVANCED SQL & DATA EXTRACTION
 
-## Challenge 4.1: Date Range Variables & SCD Type 2
-
-**Difficulty:** Advanced
-
-**Objective:** Build adjust the std orders model that uses date range variables
-
-**Background:**
-We may want to be able to rebuild a subset of data based on command line imports
-
-**Task:**
-
-1. **Adjust the stg_orders_deduplicated:** `stg_orders_deduplicated.sql`
-   - Use dbt variables to define analysis date range:
-     - `var('start_date')`: Beginning of data (default: '2024-09-01')
-     - `var('end_date')`: End of data (default: current date)
-
-2. **Implement incremental loading:**
-   - Process only records within the date range
-   - Use variables in the WHERE clause:
-
-
-3. **Test with different date ranges:**
-   - Run: `dbt run --select stg_orders_deduplicated --vars '{"start_date": "2024-09-01", "end_date": "2024-10-01"}'`
-   - Verify results change based on date range
-
-**Expected Output:**
-- Model runs for a limited date range
-
----
-
-## Challenge 4.2: JSON Extraction from Nested Audit Logs
+## Challenge 4.1: JSON Extraction from Nested Audit Logs
 
 **Difficulty:** Advanced
 
@@ -386,7 +324,7 @@ The `raw_order_audit_log` seed contains order audit events in JSON format. Each 
 
 ## Challenge 5.1: SQL-Based Data Quality Test
 
-**Difficulty:** Advanced
+**Difficulty:** Intermediate
 
 **Objective:** Build a SQL-based test to validate complex business rules
 
@@ -395,7 +333,7 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
 
 **Task:**
 
-1. **Create a SQL test:** `data-tests/order_math_validation.sql`
+1. **Create a SQL test:** `order_math_validation.sql`
    - Write SQL that validates: `order_total = subtotal + tax_paid` for all orders
    - Include a tolerance parameter for rounding (default: $0.01)
    - Return only rows that FAIL the validation
@@ -415,24 +353,8 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
    - If query returns empty result, test PASSES (all math is correct)
 
 2. **Bonus: Log Test Results to a Table**
-   - Create a model: `data-tests/stg_order_math_failures.sql`
-   - This model captures failed validation records:
-     ```sql
-     SELECT
-       CURRENT_TIMESTAMP AS test_run_timestamp,
-       'order_math_validation' AS test_name,
-       order_id,
-       subtotal,
-       tax_paid,
-       order_total,
-       (subtotal + tax_paid) AS calculated_total,
-       ABS(order_total - (subtotal + tax_paid)) AS variance
-     FROM stg_orders
-     WHERE ABS(order_total - (subtotal + tax_paid)) > 0.01
-     ```
-   - This creates an audit trail of data quality issues over time
-   - Use this table to monitor test health and identify recurring issues
-
+   - Setup dbt to log the result of this test in a table
+   - 
 3. **Add the test to dbt:**
    - Apply as a `singular` test in your dbt configuration
    - Run: `dbt test --select order_math_validation`
@@ -451,7 +373,7 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
    - Revert the change
 
 **Expected Output:**
-- Singular SQL test in `data-tests/`
+- Singular SQL test
 - Test passes on clean data
 - Bonus: Failure logging model that captures bad records
 - Documentation of test logic and tolerances
@@ -459,123 +381,41 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
 
 ---
 
-## Challenge 5.2: Data Visualization & Business Intelligence Reporting
+## Challenge 5.2: BI Reporting (Core + Bonus)
 
 **Difficulty:** Intermediate
 
-**Objective:** Create a BI report using gold layer data to visualize business metrics
+**Objective:** Create a basic BI visualization to demonstrate end-to-end data delivery
 
 **Background:**
-The gold layer contains cleaned, business-ready data. Visualizing this data helps stakeholders understand performance, trends, and key metrics. BI tools connect directly to your data warehouse to create interactive dashboards.
+Data Engineering doesn't stop at the database. We need to ensure data is usable for analytics.
 
-**Task:**
+**Task (Core):**
 
-1. **Prepare Data for BI (if required):**
-   - If your BI tool cannot connect directly to DuckDB, export gold layer tables:
-     ```bash
-     # Option A: Use DuckDB CLI
-     duckdb jaffle-shop-challenge.duckdb -c "COPY (SELECT * FROM gold.orders) TO 'data/orders.parquet' (FORMAT PARQUET)"
-     duckdb jaffle-shop-challenge.duckdb -c "COPY (SELECT * FROM gold.customers) TO 'data/customers.parquet' (FORMAT PARQUET)"
-     ```
-   - Export to CSV if Parquet not supported
-   - **Note:** Only export if your BI tool requires it. Prefer direct DuckDB connections when possible.
+1. **Prepare Data:**
+   - Ensure you have a `gold.orders` or similar final table ready.
+   - Create a simple `dim_date` table (SQL dbt model or a PowerBI DAX table) to support time-series analysis.
 
-2. **Build a Date Dimension Model:** 
-   - Create a comprehensive date dimension for time-based analysis
-   - You can use a SQL dbt model or DAX table
-   - Include:
-     - date_key (primary key)
-     - date, year, month, quarter, day_of_week
-     - is_weekend
-   - Span: Full range of orders (e.g., 2024-09-01 to present)
-   - Example rows:
-     ```
-     date_key | date       | year | month | quarter | day_of_week | is_weekend | 
-     =========|============|======|=======|=========|=============|============|
-     20240901 | 2024-09-01 | 2024 | 9     | Q3      | Sunday      | true       |
-     20240902 | 2024-09-02 | 2024 | 9     | Q3      | Monday      | false      |
-     ```
+2. **Build One Key Visualization:**
+   - Connect a BI tool (Power BI Desktop, Tableau Public, or even Excel/Google Sheets) to your DuckDB or exported data.
+   - Create a **Sales Trend Over Time** chart:
+     - X-Axis: Date (Month/Week)
+     - Y-Axis: Total Sales
+   - Take a screenshot of this visualization and save it as `bi_report_screenshot.png`.
 
-3. **Identify Facts and Dimensions:**
-   - **Fact Tables** (measurable events):
-     - `orders` - Individual transactions with amounts and dates
-     - `order_items` - Line items with quantities and prices
-   - **Dimension Tables** (descriptive attributes):
-     - `dim_date` - Time periods
-     - `dim_customers` - Customer attributes (segment, lifetime_value, etc.)
-     - `dim_products` - Product attributes (category, price, etc.)
-     - `dim_locations` (if applicable) - Store/location info
+**Task (Bonus - Optional but Recommended):**
 
-4. **Create a BI Report (Power BI Preferred, or alternative):**
+1. **Full Dashboard:**
+   - Add **Top Products by Revenue** (Bar chart).
+   - Add **Customer Segmentation** (Pie/Donut chart).
+   - Add interactive filters (Date Slicer, Product Category).
 
-   **Option A: Power BI (Preferred)**
-   - Create a `.pbix` file or Power BI Desktop report
-   - Import data:
-     - If DuckDB connector available: Connect directly to DuckDB
-     - Otherwise: Import exported Parquet/CSV files
-   - Set up relationships
-   - Create DAX measures (see below)
-   - Build visualizations
-
-   **Option B: Alternative BI Tools**
-   - Looker Studio, Tableau, Superset, or similar
-   - Same data model and relationships apply
-
-5. **Implement DAX Measures (Power BI):**
-   - or similar calculation in the tool of choice 
-   -- Total Sales
-   -- Order Count
-   -- Average Order Value
-   -- Customer Count
-
-6. **Build Visualizations (at least 3):**
-   - **1. Sales Trend Over Time**
-     - Line chart: Date (X-axis) vs Total Sales (Y-axis)
-     - Filtered by date range using slicer
-   - **2. Top Products by Revenue**
-     - Bar chart: Product name vs Revenue
-     - Sorted descending, top 10
-   - **3. Customer Segmentation**
-     - Pie/donut chart: Customer segment vs Count
-     - Or: Segment vs Revenue
-   - **4. Bonus: Orders by Day of Week**
-     - Column chart: Day of week vs Order count
-
-7. **Add Interactive Filters:**
-   - Date range slicer (from dim_date)
-   - Product category filter
-   - Customer segment filter
-   - Store/location filter (if applicable)
-   - Ensure filters work across all visualizations
-
-8. **Document the Report:**
-   - Include a cover page with:
-     - Report name and purpose
-     - Key metrics definitions
-     - Filter instructions
-   - Add tooltips to visualizations explaining metrics
-   - Include data refresh information
-   - Note any data quality assumptions
-
-9.  **Bonus Enhancements:**
-   -  Add measure for Month-over-Month Growth
-
-   - Add KPI cards showing:
-     - Total sales (current period)
-     - Order count (current period)
-     - Average order value
-   - Create a drill-down: Click product → see individual orders
-   - Add a date comparison (MoM)
+2. **DAX/Calculations:**
+   - Implement explicit measures for `Total Sales`, `Order Count`, and `Average Order Value`.
 
 **Expected Output:**
-- Date dimension
-- Power BI report (`.pbix` file) or equivalent BI tool report containing:
-  - Proper data relationships and schema
-  - 3+ visualizations
-  - 5+ DAX measures or equivalent calculated fields
-  - Interactive filters and slicers
-  - Documentation and clear labeling
-- Brief documentation explaining report structure and key insights
+- `bi_report_screenshot.png` showing at least the Sales Trend.
+- (Bonus) A `.pbix` file or link to a more complete dashboard.
 
 ---
 
@@ -584,16 +424,15 @@ The gold layer contains cleaned, business-ready data. Visualizing this data help
 Complete these challenges in order. As you work, verify:
 
 - [ ] **Challenge 1.1** - Deduplication models created and deduplicated data verified
-- [ ] **Challenge 1.2** - Regex parsing model created with validation tests
-- [ ] **Challenge 2.1** - Models reorganized into Bronze/Silver/Gold with tags
-- [ ] **Challenge 2.2** - Multiple materialization models created and working
+- [ ] **Challenge 1.2** - Regex parsing model created
+- [ ] **Challenge 2.1** - Project configured for Medallion tags (Bronze/Silver/Gold)
+- [ ] **Challenge 2.2** - Incremental model created
 - [ ] **Challenge 2.3** - Surrogate key macro implemented and used in models
 - [ ] **Challenge 3.1** - Data contracts enforced on Gold models
-- [ ] **Challenge 3.2** - Unit tests written for business logic
-- [ ] **Challenge 4.1** - Date range variables implemented in models
-- [ ] **Challenge 4.2** - JSON extraction from audit logs completed
+- [ ] **Challenge 3.2** - Unit tests written for Regex logic
+- [ ] **Challenge 4.1** - JSON extraction from audit logs completed
 - [ ] **Challenge 5.1** - SQL data quality test created and passing
-- [ ] **Challenge 5.2** - BI report created with visualizations and measures
+- [ ] **Challenge 5.2** - Basic BI visualization created (Bonus: Full Dashboard)
 
 ## Final Validation
 
@@ -603,7 +442,7 @@ After completing challenges, verify:
 # Run full build
 dbt build
 
-# Run specific layers
+# Run specific layers (verify your tagging works!)
 dbt run --select tag:bronze
 dbt run --select tag:silver
 dbt run --select tag:gold
@@ -621,12 +460,12 @@ dbt test --select "order_math_validation"
 All commands should execute without errors.
 
 **Time Breakdown by Level:**
-- **Level 1 (Challenges 1.1-1.2):** 1-1.5 hours
-- **Level 2 (Challenges 2.1-2.3):** 1.5-2 hours
-- **Level 3 (Challenges 3.1-3.2):** 1-1.5 hours
-- **Level 4 (Challenges 4.1-4.2):** 1.5-2 hours
-- **Level 5 (Challenges 5.1-5.2):** 1-1.5 hours
-- **Total:** 5-7 hours (intermediate), 3-4 hours (senior)
+- **Level 1 (Challenges 1.1-1.2):** 45-60 mins
+- **Level 2 (Challenges 2.1-2.3):** 45-60 mins
+- **Level 3 (Challenges 3.1-3.2):** 30-45 mins
+- **Level 4 (Challenge 4.1):** 45-60 mins
+- **Level 5 (Challenges 5.1-5.2):** 30-45 mins
+- **Total:** 3-5 hours
 
 ---
 
