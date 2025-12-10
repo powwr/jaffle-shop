@@ -1,11 +1,15 @@
-sku,name,type,price,description
-JAF-001,nutellaphone who dis?,jaffle,1100,nutella and banana jaffle
-JAF-002,doctor stew,jaffle,1100,house-made beef stew jaffle
-JAF-003,the krautback,jaffle,1200,lamb and pork bratwurst with house-pickled cabbage sauerkraut and mustard
-JAF-004,flame impala,jaffle,1400,"pulled pork and pineapple al pastor marinated in ghost pepper sauce, kevin parker's favorite! "
-JAF-005,mel-bun,jaffle,1200,"melon and minced beef bao, in a jaffle, savory and sweet"
-BEV-001,tangaroo,beverage,600,mango and tangerine smoothie
-BEV-002,chai and mighty,beverage,500,oatmilk chai latte with protein boost
-BEV-003,vanilla ice,beverage,600,iced coffee with house-made french vanilla syrup
-BEV-004,for richer or pourover ,beverage,700,daily selection of single estate beans for a delicious hot pourover
-BEV-005,adele-ade,beverage,400,"a kiwi and lime agua fresca, hello from the other side of thirst"
+sku,name,type,price,description,last_updated
+JAF-001,nutellaphone who dis?,jaffle,1100,nutella and banana jaffle,2025-01-15T08:30:00Z
+JAF-002,doctor stew,jaffle,1100,house-made beef stew jaffle,2025-02-20T10:00:00Z
+JAF-003,the krautback,jaffle,1200,lamb and pork bratwurst with house-pickled cabbage sauerkraut and mustard,2025-03-05T14:22:10Z
+JAF-004,flame impala,jaffle,1400,"pulled pork and pineapple al pastor marinated in ghost pepper sauce, kevin parker's favorite! ",2025-04-12T19:45:00Z
+JAF-005,mel-bun,jaffle,1200,"melon and minced beef bao, in a jaffle, savory and sweet",2025-05-01T09:12:34Z
+BEV-001,tangaroo,beverage,600,mango and tangerine smoothie,2025-06-18T07:00:00Z
+BEV-002,chai and mighty,beverage,500,oatmilk chai latte with protein boost,2025-07-22T11:11:11Z
+BEV-003,vanilla ice,beverage,600,iced coffee with house-made french vanilla syrup,2025-08-30T16:00:00Z
+BEV-004,for richer or pourover ,beverage,700,daily selection of single estate beans for a delicious hot pourover,2025-09-10T13:37:00Z
+BEV-005,adele-ade,beverage,400,"a kiwi and lime agua fresca, hello from the other side of thirst",2025-10-31T23:59:59Z
+BEV-001,tangaroo,beverage,600,mango and tangerine smoothie,2025-06-18T07:00:00Z
+BEV-004,for richer or pourover ,beverage,700,daily selection of single estate beans for a delicious hot pourover,2025-09-10T13:37:00Z
+BEV-005,adele-ade,beverage,400,"a kiwi and lime agua fresca, hello from the other side of thirst",2025-10-31T23:59:59Z
+BEV-005,adele-ade,beverage,400,"a kiwi and lime agua fresca, hello from the other side of thirst",2025-11-01T23:59:59Z

@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: stg_orders_deduplicated
+    description: |
+      Orders with duplicates removed using window functions.
+      
+      Challenge 1.1: Demonstrate your ability to use CTEs and window functions
+      to identify and remove duplicate records.
+    columns:
+      - name: order_id
+        description: Unique order identifier
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to customer
+      - name: store_id
+        description: Store where order was placed
+      - name: ordered_at
+        description: Timestamp when order was created
+      - name: subtotal
+        description: Order subtotal before tax
+      - name: tax_paid
+        description: Tax amount
+      - name: order_total
+        description: Total order amount (subtotal + tax)
+
+  - name: stg_products_parsed
+    description: |
+      Products with parsed SKU and description data.
+      
+      Challenge 1.2: Demonstrate your ability to extract data using regular expressions
+      to parse SKU categories, ingredients, and product classifications.
+    columns:
+      - name: sku
+        description: Product SKU (e.g., JAF-001, BEV-002)
+        tests:
+          - not_null
+          - unique
+      - name: sku_category
+        description: Category extracted from SKU using regex (e.g., JAF, BEV)
+        tests:
+          - accepted_values:
+              values: ['JAF', 'BEV']
+      - name: sku_number
+        description: Numeric portion of SKU extracted via regex
+      - name: ingredients
+        description: Comma-separated list of ingredients extracted from description
+      - name: name
+        description: Product name
+      - name: type
+        description: Product type
+      - name: price
+        description: Product price in cents

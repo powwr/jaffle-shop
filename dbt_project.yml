@@ -23,6 +23,8 @@ clean-targets:
 
 vars:
   "dbt_date:time_zone": "America/Los_Angeles"
+  "start_date": "2024-09-01"
+  "end_date": "2024-09-30"
 
 seeds:
   jaffle_shop:
@@ -32,7 +34,26 @@ seeds:
 
 models:
   jaffle_shop:
+    # Bronze Layer - Direct source mappings with minimal transformation
+    bronze:
+      +materialized: view
+      +tags: ['bronze']
+      +schema: 'bronze'
+    # Silver Layer - Business logic transformations and enrichment
+    silver:
+      +materialized: view
+      +tags: ['silver']
+      +schema: 'silver'
+    # Gold Layer - Analysis-ready data for reporting and BI
+    gold:
+      +materialized: table
+      +tags: ['gold']
+      +schema: 'gold'
+    # Legacy staging layer (being migrated to bronze/silver)
     staging:
       +materialized: view
+      +schema: 'staging'
+    # Legacy marts layer (being migrated to gold)
     marts:
       +materialized: table
+      +schema: 'marts'
