@@ -1,0 +1,8 @@
+default:
+  outputs:        
+    local:
+      type: duckdb
+      path: "jaffle-shop-challenge.duckdb"
+      threads: 1
+      keep_open: true
+  target: local
