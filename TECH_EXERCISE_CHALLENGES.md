@@ -18,7 +18,7 @@ Welcome to the Jaffle Shop Data Engineering technical exercise! This document ou
 
 **Target Roles:** Data Engineer, Senior Data Engineer
 
-**Time Estimate:** 3-5 hours
+**Time Estimate:** 2-3 hours (timebox)
 
 **Prerequisites:**
 - Familiarity with dbt and SQL
