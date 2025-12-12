@@ -102,7 +102,7 @@ default:
 
 ## Challenge Approach
 
-1. **Read** `TECH_TEST_CHALLENGES.md` carefully - each challenge has detailed instructions
+1. **Read** `TECH_EXERCISE_CHALLENGES.md` carefully - each challenge has detailed instructions
 2. **Start with Level 1** - SQL fundamentals before architectural patterns
 3. **Test frequently** - Run `dbt build` after each model
 4. **Document your work** - Add comments explaining your approach

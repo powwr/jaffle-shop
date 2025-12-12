@@ -24,7 +24,7 @@ Welcome to the Jaffle Shop Data Engineering technical exercise! This document ou
 - Familiarity with dbt and SQL
 - Understanding of data modeling concepts
 - Comfort with command-line tools and Git
-- A visualsation tool like PowerBI
+- A visualisation tool like PowerBI
 
 ---
 
@@ -70,15 +70,15 @@ The raw seed data contains intentional duplicates to simulate real-world data qu
 
 2. **Create a staging model:** Create `stg_orders_deduplicated.sql`
    - Use CTEs to structure your logic
-   - Implement a a solution to exclude duplicates
+   - Implement a solution to exclude duplicates
    - Keep only the latest occurrence of each duplicate group if possible 
    - Test: Add a generic test to ensure no duplicate order IDs exist in the output
-   - Make use for the deduplicated version in other models
+   - Make use of the deduplicated version in other models
 
 3. **Bonus:** 
    - Do the same for `stg_products_deduplicated.sql`
    - Document edge cases: What if ordering matters? How would you preserve the "correct" record if there were subtle differences?
-   - Make use for the deduplicated version in other models
+   - Make use of the deduplicated version in other models
   
 **Expected Output:**
 - Clean staging models with no duplicates
