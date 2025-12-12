@@ -120,19 +120,22 @@ Product SKUs follow a pattern: `[CATEGORY]-[NUMBER]` (e.g., `JAF-001`, `BEV-002`
 **Objective:** Configure the project for Medallion architecture using `dbt_project.yml` configuration
 
 **Background:**
+We want to enforce a Bronze/Silver/Gold structure. Instead of manually tagging every model, we want to use dbt's folder-level configuration to apply tags automatically.
 The medallion architecture (Bronze/Silver/Gold) is partially configured in `dbt_project.yml`, but the folder structure is incomplete.
 
 **Task:**
 1. **Create the missing folder structure:**
-   - The `models/bronze` and `models/gold` folders need to be created (`.gitkeep` placeholders exist)
+   - Ensure `models/bronze`, `models/silver`, and `models/gold` exist (`.gitkeep` placeholders exist).
 
-2. **Migrate models to the appropriate layers:**
-   - Migrate the legacy `staging` models to the `silver` folder (rename/refactor as needed)
-   - Migrate the `marts` models to the `gold` folder
+2. **Configure `dbt_project.yml`:**
+   - Configure the project so that any model inside `models/bronze` automatically gets the tag `bronze`.
+   - Do the same for `silver` and `gold`.
 
-3. **Verify your changes work:**
-   - Run `dbt run --select tag:silver` and confirm models build correctly
-   - Run `dbt run --select tag:gold` and confirm models build correctly
+3. **Migrate a sample:**
+   - Move `stg_orders_deduplicated` (from Challenge 1.1) to the `silver` folder (rename/refactor as needed to fit the layer, e.g., `silver_orders`).
+   - Verify it inherits the `silver` tag automatically by running `dbt run --select tag:silver`.
+   - Move the marts models to the `gold` folder.
+   - Verify they inherits the `gold` tag automatically by running `dbt run --select tag:gold`.
 
 **Expected Output:**
 - Updated `dbt_project.yml` with folder-level tag configuration
@@ -449,8 +452,7 @@ Please include:
 
 ## Validation guidance
 
-* It's enough for the models/tests you worked on to run cleanly.
-* You don't need to make the entire project perfect end-to-end if that isn't what you prioritised.
+* The models/tests you worked on run cleanly.
 
 ---
 
