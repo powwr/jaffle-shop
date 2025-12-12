@@ -1,10 +1,33 @@
 # Powwr Jaffle Shop Challenge — Setup (dbt + DuckDB)
 
-This repository is a ready-to-run dbt project using DuckDB and seed data to simulate a small e-commerce pipeline. Use this README to get your environment configured and verify dbt + DuckDB are working locally. Once setup is complete, continue to the TECH_TEST_CHALLENGES.md document for the step-by-step exercises and evaluation tasks.
+This repository is a ready-to-run dbt project using DuckDB and seed data to simulate a small e-commerce pipeline. Use this README to get your environment configured and verify dbt + DuckDB are working locally. Once setup is complete, continue to the TECH_EXERCISE_CHALLENGES.md document for the step-by-step exercises and evaluation tasks.
+
+## 🎯 For Technical Exercise Candidates
+
+This repository is set up for the POWWR Data Engineering technical exercise.
+
+**Before you start:**
+1. Read `TECH_EXERCISE_CHALLENGES.md` for the full challenge specification
+2. The project uses DuckDB locally — see setup instructions below
+3. You don't need to complete every challenge. Focus on demonstrating your approach
+
+**What's already here:**
+- Seed data with intentional data quality issues (duplicates, etc.)
+- Schema definitions for some models you'll need to implement
+- A partially configured medallion architecture (bronze/silver/gold)
+- Legacy `staging` and `marts` folders being migrated
+
+**What we're looking for:**
+- How you approach data transformation problems
+- Clear, maintainable SQL
+- Sensible assumptions and trade-offs
+- Communication of your thinking (comments, commit messages, etc.)
+
+---
 
 Start here:
 - Follow the "Quick setup" and "Configure dbt to use DuckDB" sections below to prepare your environment.
-- After setup, open TECH_TEST_CHALLENGES.md (in the repository root) to begin the tech test challenges in order.
+- After setup, open TECH_EXERCISE_CHALLENGES.md (in the repository root) to begin the technical exercise challenges in order.
 
 This README explains how to set up the local environment, configure dbt to use DuckDB, and load the project's default seed data.
 

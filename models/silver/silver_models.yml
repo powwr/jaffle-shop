@@ -1,3 +1,9 @@
+# ============================================================================
+# CANDIDATE NOTE: These schema definitions describe the expected output for
+# Challenges 1.1 and 1.2. Your task is to implement the SQL models that
+# satisfy these contracts. The tests defined here will validate your work.
+# ============================================================================
+
 version: 2
 
 models:

@@ -1,6 +1,20 @@
-# Jaffle Shop Data Engineering Tech Test Challenges
+# Jaffle Shop Data Engineering Technical Exercise
 
-Welcome to the Jaffle Shop Data Engineering Tech Test! This document outlines a series of escalating challenges designed to assess your skills in data engineering, SQL, dbt, and data architecture.
+## How we expect you to approach this
+
+Please treat this exercise as a timebox.
+
+* **Timebox:** aim for around 2–3 hours.
+* **Minimum expectation:** complete Level 1 (Challenges 1.1 and 1.2).
+* Then choose **one** additional area that best shows your strengths (pick any one challenge from Levels 2–5).
+* Bonus items are genuinely optional. We do not expect you to complete everything.
+* We care most about your approach: how you frame the problem, make assumptions, prioritise, and communicate trade-offs.
+* When your timebox ends, stop. Add a short note on what you would do next with more time.
+* If setup/tooling issues get in the way, tell us what happened. We don't want environment friction to be the exercise.
+
+---
+
+Welcome to the Jaffle Shop Data Engineering technical exercise! This document outlines a series of escalating challenges designed to assess your skills in data engineering, SQL, dbt, and data architecture.
 
 **Target Roles:** Data Engineer, Senior Data Engineer
 
@@ -36,11 +50,15 @@ Challenges are organized by difficulty level and topic area. You should complete
 
 # LEVEL 1: FOUNDATIONS (SQL & dbt Basics)
 
+> **This is the baseline expectation.** Please complete both challenges in this level.
+
 ## Challenge 1.1: Data Quality - Deduplication Using CTEs and Window Functions
 
 **Difficulty:** Beginner-Intermediate
 
 **Objective:** Identify and remove duplicate records in seed data using SQL
+
+> **Note:** We've provided schema definitions in `models/silver/silver_models.yml` that describe the expected columns and tests for `stg_orders_deduplicated`. Your task is to implement the SQL model that satisfies these contracts.
 
 **Background:**
 The raw seed data contains intentional duplicates to simulate real-world data quality issues. The order and product data contain exact duplicates that need to be cleaned.
@@ -75,6 +93,8 @@ The raw seed data contains intentional duplicates to simulate real-world data qu
 
 **Objective:** Extract data using regular expressions (to be unit tested later)
 
+> **Note:** We've provided schema definitions in `models/silver/silver_models.yml` that describe the expected columns and tests for `stg_products_parsed`. Your task is to implement the SQL model that satisfies these contracts.
+
 **Background:**
 Product SKUs follow a pattern: `[CATEGORY]-[NUMBER]` (e.g., `JAF-001`, `BEV-002`). You need to extract these components for downstream analysis.
 
@@ -99,21 +119,19 @@ Product SKUs follow a pattern: `[CATEGORY]-[NUMBER]` (e.g., `JAF-001`, `BEV-002`
 **Objective:** Configure the project for Medallion architecture using `dbt_project.yml` configuration
 
 **Background:**
-We want to enforce a Bronze/Silver/Gold structure. Instead of manually tagging every model, we want to use dbt's folder-level configuration to apply tags automatically.
+The medallion architecture (Bronze/Silver/Gold) is partially configured in `dbt_project.yml`, but the folder structure is incomplete.
 
 **Task:**
-1. **Create folder structure:**
-   - Ensure `models/bronze`, `models/silver`, and `models/gold` exist.
+1. **Create the missing folder structure:**
+   - The `models/bronze` and `models/gold` folders need to be created (`.gitkeep` placeholders exist)
 
-2. **Configure `dbt_project.yml`:**
-   - Configure the project so that any model inside `models/bronze` automatically gets the tag `bronze`.
-   - Do the same for `silver` and `gold`.
+2. **Migrate models to the appropriate layers:**
+   - Migrate the legacy `staging` models to the `silver` folder (rename/refactor as needed)
+   - Migrate the `marts` models to the `gold` folder
 
-3. **Migrate a sample:**
-   - Move `stg_orders_deduplicated` (from Challenge 1.1) to the `silver` folder (rename/refactor as needed to fit the layer, e.g., `silver_orders`).
-   - Verify it inherits the `silver` tag automatically by running `dbt run --select tag:silver`.
-   - Move the marts models to the `gold` folder
-   - Verify they inherits the `gold` tag automatically by running `dbt run --select tag:gold`.
+3. **Verify your changes work:**
+   - Run `dbt run --select tag:silver` and confirm models build correctly
+   - Run `dbt run --select tag:gold` and confirm models build correctly
 
 **Expected Output:**
 - Updated `dbt_project.yml` with folder-level tag configuration
@@ -419,53 +437,19 @@ Data Engineering doesn't stop at the database. We need to ensure data is usable 
 
 ---
 
-# CHALLENGE SUBMISSION CHECKLIST
+## Submission guide
 
-Complete these challenges in order. As you work, verify:
+Please include:
+* What you completed (and what you chose not to complete within the timebox).
+* How to run your work (the commands we should use to validate the parts you touched).
+* Any assumptions you made and why.
+* Any trade-offs or concerns you'd raise if this were going into production.
+* What you would do next with more time (short bullets are fine).
 
-- [ ] **Challenge 1.1** - Deduplication models created and deduplicated data verified
-- [ ] **Challenge 1.2** - Regex parsing model created
-- [ ] **Challenge 2.1** - Project configured for Medallion tags (Bronze/Silver/Gold)
-- [ ] **Challenge 2.2** - Incremental model created
-- [ ] **Challenge 2.3** - Surrogate key macro implemented and used in models
-- [ ] **Challenge 3.1** - Data contracts enforced on Gold models
-- [ ] **Challenge 3.2** - Unit tests written for Regex logic
-- [ ] **Challenge 4.1** - JSON extraction from audit logs completed
-- [ ] **Challenge 5.1** - SQL data quality test created and passing
-- [ ] **Challenge 5.2** - Basic BI visualization created (Bonus: Full Dashboard)
+## Validation guidance
 
-## Final Validation
-
-After completing challenges, verify:
-
-```bash
-# Run full build
-dbt build
-
-# Run specific layers (verify your tagging works!)
-dbt run --select tag:bronze
-dbt run --select tag:silver
-dbt run --select tag:gold
-
-# Run all tests
-dbt test
-
-# Check unit tests
-dbt test --select "test_type:unit"
-
-# Check data quality tests
-dbt test --select "order_math_validation"
-```
-
-All commands should execute without errors.
-
-**Time Breakdown by Level:**
-- **Level 1 (Challenges 1.1-1.2):** 45-60 mins
-- **Level 2 (Challenges 2.1-2.3):** 45-60 mins
-- **Level 3 (Challenges 3.1-3.2):** 30-45 mins
-- **Level 4 (Challenge 4.1):** 45-60 mins
-- **Level 5 (Challenges 5.1-5.2):** 30-45 mins
-- **Total:** 3-5 hours
+* It's enough for the models/tests you worked on to run cleanly.
+* You don't need to make the entire project perfect end-to-end if that isn't what you prioritised.
 
 ---
 
@@ -499,4 +483,4 @@ All commands should execute without errors.
 
 ---
 
-**Good luck! This challenge tests your ability to design, implement, and validate data pipelines—core skills for any data engineer.**
+**Good luck! This exercise assesses your ability to design, implement, and validate data pipelines—core skills for any data engineer.**
