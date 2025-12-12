@@ -4,13 +4,14 @@
 
 Please treat this exercise as a timebox.
 
-* **Timebox:** aim for around 2–3 hours.
+* **Timebox:** we recommend you timebox your work to 2–3 hours, unless you feel you would like to spend more time.
 * **Minimum expectation:** complete Level 1 (Challenges 1.1 and 1.2).
-* Then choose **one** additional area that best shows your strengths (pick any one challenge from Levels 2–5).
+* Then choose one or two additional challenges from Levels 2–5 that best show your strengths (**_doing more is optional if you have time_**).
 * Bonus items are genuinely optional. We do not expect you to complete everything.
 * We care most about your approach: how you frame the problem, make assumptions, prioritise, and communicate trade-offs.
 * When your timebox ends, stop. Add a short note on what you would do next with more time.
-* If setup/tooling issues get in the way, tell us what happened. We don't want environment friction to be the exercise.
+* If setup/tooling issues get in the way, tell us what happened. We don't want environment setup to be the exercise.
+* If anything is unclear in the brief, reply with questions — we’re happy to clarify.
 
 ---
 
@@ -44,7 +45,7 @@ Current state:
 
 ## Challenge Structure
 
-Challenges are organized by difficulty level and topic area. You should complete them in order, as they build on each other.
+Start with Level 1. After that, pick the area that best shows your strengths. Some challenges build on others; if you skip ahead, mock inputs as needed and explain your assumptions.
 
 ---
 
@@ -71,15 +72,15 @@ The raw seed data contains intentional duplicates to simulate real-world data qu
 2. **Create a staging model:** Create `stg_orders_deduplicated.sql`
    - Use CTEs to structure your logic
    - Implement a solution to exclude duplicates
-   - Keep only the latest occurrence of each duplicate group if possible 
+   - Keep only the latest occurrence of each duplicate group if possible
    - Test: Add a generic test to ensure no duplicate order IDs exist in the output
    - Make use of the deduplicated version in other models
 
-3. **Bonus:** 
+3. **Bonus:**
    - Do the same for `stg_products_deduplicated.sql`
    - Document edge cases: What if ordering matters? How would you preserve the "correct" record if there were subtle differences?
    - Make use of the deduplicated version in other models
-  
+
 **Expected Output:**
 - Clean staging models with no duplicates
 - A working unique test that validates the deduplication logic
@@ -184,7 +185,7 @@ Your organization requires surrogate keys that are human-readable and debuggable
    - Produces a deterministic, reproducible key
    - Does NOT hash the result (keeps it readable)
    - Handles NULL values gracefully (e.g., convert to 'NULL_VALUE' string)
-   - Example usage: `{{ generate_text_surrogate_key(['customer_id', 'order_date']) }}` 
+   - Example usage: `{{ generate_text_surrogate_key(['customer_id', 'order_date']) }}`
      → `'50a2d1c4-d788-4498-a6f7|2024-09-01'`
 
 2. **Use the macro in models:**
@@ -444,7 +445,7 @@ Please include:
 * How to run your work (the commands we should use to validate the parts you touched).
 * Any assumptions you made and why.
 * Any trade-offs or concerns you'd raise if this were going into production.
-* What you would do next with more time (short bullets are fine).
+* What you would do next with more time.
 
 ## Validation guidance
 
