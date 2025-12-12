@@ -372,7 +372,7 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
 
 2. **Bonus: Log Test Results to a Table**
    - Setup dbt to log the result of this test in a table
-   - 
+
 3. **Add the test to dbt:**
    - Apply as a `singular` test in your dbt configuration
    - Run: `dbt test --select order_math_validation`
