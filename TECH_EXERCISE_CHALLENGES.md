@@ -221,7 +221,7 @@ Data contracts ensure that downstream consumers (BI tools, APIs) have guaranteed
 **Task:**
 
 1. **Add contracts to models:**
-   - For an Gold level Models add enforced models
+   - For Gold layer models, add enforced contracts
 
 2. **Test contract enforcement:**
    - Modify a model temporarily to return wrong column types
