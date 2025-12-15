@@ -478,7 +478,8 @@ Please include:
 - [dbt unit tests](https://docs.getdbt.com/docs/build/unit-tests) — dbt's unit testing guide.
 - [dbt contracts](https://docs.getdbt.com/docs/collaborate/contracts) — data contract docs.
 - Visual Studio Code (IDE): https://code.visualstudio.com/ — lightweight, extensible editor. Useful extensions: Python, SQL, and dbt helper extensions (e.g., dbt Power User).
-- DuckDB Studio / UI: https://duckdb.org/docs/tools/duckdb_studio — UI for exploring DuckDB files and running ad-hoc queries.
+- DuckDB UI: https://duckdb.org/docs/stable/core_extensions/ui — UI for exploring DuckDB files and running ad-hoc queries.
+- Duckdb Dbt Connector and Interactive Shell - https://github.com/duckdb/dbt-duckdb?tab=readme-ov-file#interactive-shell - Interactive Shell can allow you to run duckdb -ui and dbt against the same single use db
 - Poetry (dependency manager): https://python-poetry.org/ — used here for Python and dbt dependency management.
 - Jaffle Shop (official dbt demo repo): https://github.com/dbt-labs/jaffle_shop — canonical example to reference.
 - DuckDB regex functions: https://duckdb.org/docs/sql/functions/regexp — reference for REGEXP-related functions used for SKU parsing and pattern extraction.
