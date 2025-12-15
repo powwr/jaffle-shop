@@ -4,9 +4,9 @@
 
 Please treat this exercise as a timebox.
 
-* **Timebox:** we recommend you timebox your work to 2–3 hours, unless you feel you would like to spend more time.
+* **Timebox:** we recommend you timebox your work (e.g. 2–3 hours), unless you feel you would like to spend more time.
 * **Minimum expectation:** complete Level 1 (Challenges 1.1 and 1.2).
-* Then choose one or two additional challenges from Levels 2–5 that best show your strengths (**_doing more is optional if you have time_**).
+* Then choose at least two challenges from Levels 2–5 that best show your strengths (**_doing more is optional if you have time_**).
 * Bonus items are genuinely optional. We do not expect you to complete everything.
 * We care most about your approach: how you frame the problem, make assumptions, prioritise, and communicate trade-offs.
 * When your timebox ends, stop. Add a short note on what you would do next with more time.
@@ -19,11 +19,11 @@ Welcome to the Jaffle Shop Data Engineering technical exercise! This document ou
 
 **Target Roles:** Data Engineer, Senior Data Engineer
 
-**Time Estimate:** 2-3 hours (timebox)
+**Time Estimate:** 3-5 hours (all levels)
 
 **Prerequisites:**
-- Familiarity with dbt and SQL
-- Understanding of data modeling concepts
+- Familiarity with `dbt` and SQL
+- Understanding of data modelling concepts
 - Comfort with command-line tools and Git
 - A visualisation tool like PowerBI
 
@@ -31,7 +31,7 @@ Welcome to the Jaffle Shop Data Engineering technical exercise! This document ou
 
 ## Project Overview
 
-The Jaffle Shop is a fictional e-commerce business selling specialty jaffles (Belgian waffles) and beverages. The project uses:
+The Jaffle Shop is a fictional e-commerce business selling speciality jaffles (Belgian waffles) and beverages. The project uses:
 - **DuckDB** for data warehousing
 - **dbt** for data transformation and testing
 
@@ -135,7 +135,7 @@ The medallion architecture (Bronze/Silver/Gold) is partially configured in `dbt_
    - Move `stg_orders_deduplicated` (from Challenge 1.1) to the `silver` folder (rename/refactor as needed to fit the layer, e.g., `silver_orders`).
    - Verify it inherits the `silver` tag automatically by running `dbt run --select tag:silver`.
    - Move the marts models to the `gold` folder.
-   - Verify they inherits the `gold` tag automatically by running `dbt run --select tag:gold`.
+   - Verify they inherit the `gold` tag automatically by running `dbt run --select tag:gold`.
 
 **Expected Output:**
 - Updated `dbt_project.yml` with folder-level tag configuration
@@ -144,7 +144,7 @@ The medallion architecture (Bronze/Silver/Gold) is partially configured in `dbt_
 
 ---
 
-## Challenge 2.2: Incremental Materialization
+## Challenge 2.2: Incremental Materialisation
 
 **Difficulty:** Intermediate
 
@@ -178,7 +178,7 @@ As data grows, full refreshes become too slow. We need to process only new or ch
 **Objective:** Build a reusable macro for generating surrogate keys without hashing
 
 **Background:**
-Your organization requires surrogate keys that are human-readable and debuggable (not hashed). The existing `cents_to_dollars` macro shows the pattern for custom macros.
+Your organisation requires surrogate keys that are human-readable and debuggable (not hashed). The existing `cents_to_dollars` macro shows the pattern for custom macros.
 
 **Task:**
 
@@ -246,7 +246,7 @@ Data contracts ensure that downstream consumers (BI tools, APIs) have guaranteed
 **Objective:** Add dbt unit tests to validate your Regex parsing logic
 
 **Background:**
-In Challenge 1.2, you wrote regex to parse SKUs. Now, we need to guarantee this logic works for various edge cases using dbt's Unit Testing framework (available in dbt Core 1.8+).
+In Challenge 1.2, you wrote a regex to parse SKUs. Now, we need to guarantee this logic works for various edge cases using dbt's Unit Testing framework (available in dbt Core 1.8+).
 
 **Task:**
 
@@ -274,14 +274,14 @@ In Challenge 1.2, you wrote regex to parse SKUs. Now, we need to guarantee this 
 
 **Difficulty:** Advanced
 
-**Objective:** Extract and analyze data from JSON-embedded audit logs
+**Objective:** Extract and analyse data from JSON-embedded audit logs
 
 **Background:**
-The `raw_order_audit_log` seed contains order audit events in JSON format. Each row contains event metadata and a JSON payload with nested order event details. You need to extract, transform, and analyze this nested data.
+The `raw_order_audit_log` seed contains order audit events in JSON format. Each row contains event metadata and a JSON payload with nested order event details. You need to extract, transform, and analyse this nested data.
 
 **Task:**
 
-1. **Analyze the audit log structure:**
+1. **Analyse the audit log structure:**
    - The raw_order_audit_log table contains:
      - event_id: Unique identifier
      - order_id: Associated order
@@ -324,7 +324,7 @@ The `raw_order_audit_log` seed contains order audit events in JSON format. Each 
    - Create tests validating:
      - No NULL order_ids in extracted data
      - event_payload contains valid JSON (handle parse errors gracefully)
-     - All changes are captured in unnested output
+     - All changes are captured in an unnested output
 
 5. **Bonus:**
    - Create a model that flags suspicious patterns:
@@ -375,7 +375,7 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
    - If query returns empty result, test PASSES (all math is correct)
 
 2. **Bonus: Log Test Results to a Table**
-   - Setup dbt to log the result of this test in a table
+   - Set up dbt to log the result of this test in a table
 
 3. **Add the test to dbt:**
    - Apply as a `singular` test in your dbt configuration
@@ -383,14 +383,14 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
    - Verify test passes in clean state
 
 4. **Document the test:**
-   - Add comments explaining tolerance parameter
-   - Document expected behavior and failure cases
+   - Add comments explaining the tolerance parameter
+   - Document expected behaviour and failure cases
    - Include examples of what would cause the test to fail
 
 5. **Test your test:**
    - Run test in clean state (should pass)
    - Manually corrupt a row (change order_total incorrectly)
-   - Re-run test and verify it catches the issue
+   - Re-run the test and verify it catches the issue
    - Check the failure logging table for the bad record
    - Revert the change
 
@@ -407,7 +407,7 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
 
 **Difficulty:** Intermediate
 
-**Objective:** Create a basic BI visualization to demonstrate end-to-end data delivery
+**Objective:** Create a basic BI visualisation to demonstrate end-to-end data delivery
 
 **Background:**
 Data Engineering doesn't stop at the database. We need to ensure data is usable for analytics.
@@ -418,12 +418,12 @@ Data Engineering doesn't stop at the database. We need to ensure data is usable 
    - Ensure you have a `gold.orders` or similar final table ready.
    - Create a simple `dim_date` table (SQL dbt model or a PowerBI DAX table) to support time-series analysis.
 
-2. **Build One Key Visualization:**
+2. **Build One Key Visualisation:**
    - Connect a BI tool (Power BI Desktop, Tableau Public, or even Excel/Google Sheets) to your DuckDB or exported data.
    - Create a **Sales Trend Over Time** chart:
      - X-Axis: Date (Month/Week)
      - Y-Axis: Total Sales
-   - Take a screenshot of this visualization and save it as `bi_report_screenshot.png`.
+   - Take a screenshot of this visualisation and save it as `bi_report_screenshot.png`.
 
 **Task (Bonus - Optional but Recommended):**
 
