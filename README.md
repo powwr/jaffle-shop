@@ -27,11 +27,11 @@ This repository is set up for the POWWR Data Engineering technical exercise.
 
 Start here:
 - Follow the "Quick setup" and "Configure dbt to use DuckDB" sections below to prepare your environment.
-- After setup, open TECH_EXERCISE_CHALLENGES.md (in the repository root) to begin the technical exercise challenges.
+- After setup, open `TECH_EXERCISE_CHALLENGES.md` (in the repository root) to begin the technical exercise challenges.
 
 This README explains how to set up the local environment, configure dbt to use DuckDB, and load the project's default seed data.
 
-This Project is a folk of the std dbt repo https://github.com/dbt-labs/jaffle-shop
+This Project is a fork of the std dbt repo https://github.com/dbt-labs/jaffle-shop
 
 ## Prerequisites
 - Git
@@ -102,7 +102,7 @@ default:
 
 ## Challenge Approach
 
-1. **Read** `TECH_EXERCISE_CHALLENGES.md` carefully - each challenge has detailed instructions
+1. **Read** [`TECH_EXERCISE_CHALLENGES.md`](./TECH_EXERCISE_CHALLENGES.md) carefully - each challenge has detailed instructions
 2. **Start with Level 1** - SQL fundamentals before architectural patterns
 3. **Test frequently** - Run `dbt build` after each model
 4. **Document your work** - Add comments explaining your approach
