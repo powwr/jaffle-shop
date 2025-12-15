@@ -469,7 +469,7 @@ Please include:
 - `dbt debug` - Verify dbt setup and DuckDB connection
 - `dbt parse` - Check YAML syntax errors
 - `dbt run --select model_name --debug` - Verbose output
-- Check DuckDB file directly: `duckdb jaffle-shop-challenge.duckdb`
+- Check DuckDB file directly: `duckdb -ui jaffle-shop-challenge.duckdb`
 
 
 ## Resources
@@ -477,7 +477,7 @@ Please include:
 - [DuckDB SQL documentation](https://duckdb.org/docs/sql/introduction) — DuckDB intro and SQL reference.
 - [dbt unit tests](https://docs.getdbt.com/docs/build/unit-tests) — dbt's unit testing guide.
 - [dbt contracts](https://docs.getdbt.com/docs/collaborate/contracts) — data contract docs.
-- Visual Studio Code (IDE): https://code.visualstudio.com/ — lightweight, extensible editor. Useful extensions: Python, SQL, and dbt helper extensions (e.g., dbt Power User).
+- Visual Studio Code (IDE): https://code.visualstudio.com/ — lightweight, extensible editor. Useful extensions: Python, SQL and github copilot.
 - DuckDB UI: https://duckdb.org/docs/stable/core_extensions/ui — UI for exploring DuckDB files and running ad-hoc queries.
 - Duckdb Dbt Connector and Interactive Shell - https://github.com/duckdb/dbt-duckdb?tab=readme-ov-file#interactive-shell - Interactive Shell can allow you to run duckdb -ui and dbt against the same single use db
 - Poetry (dependency manager): https://python-poetry.org/ — used here for Python and dbt dependency management.
