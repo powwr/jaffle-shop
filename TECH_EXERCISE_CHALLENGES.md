@@ -2,16 +2,19 @@
 
 ## How we expect you to approach this
 
-Please treat this exercise as a timebox.
+Please treat this exercise as a timeboxed piece of work.
 
-* **Timebox:** we recommend you timebox your work (e.g. 2–3 hours), unless you feel you would like to spend more time.
-* **Minimum expectation:** complete Level 1 (Challenges 1.1 and 1.2).
-* Then choose at least two challenges from Levels 2–5 that best show your strengths (**_doing more is optional if you have time_**).
-* Bonus items are genuinely optional. We do not expect you to complete everything.
-* We care most about your approach: how you frame the problem, make assumptions, prioritise, and communicate trade-offs.
-* When your timebox ends, stop. Add a short note on what you would do next with more time.
-* If setup/tooling issues get in the way, tell us what happened. We don't want environment setup to be the exercise.
-* If anything is unclear in the brief, reply with questions — we’re happy to clarify.
+- **Timebox:** we recommend timeboxing your work (e.g. **3–5 hours**). If you choose to spend more time, that’s fine — just be clear about where you focused and why.
+- **Baseline expectation (all candidates):** complete **Level 1** (Challenges 1.1 and 1.2).
+- Expectations are aligned to the role you are applying for:
+  - **Data Engineer role**: complete Level 1 plus at least two challenges from Levels 2–5 that best show your strengths.
+  - **Senior Data Engineer role**: we expect you to work through most of Levels 2–5, prioritising sensibly and demonstrating architectural judgement.
+- If time or familiarity with parts of the stack limits coverage, focus on fewer areas and explain your trade-offs clearly — how you scope and prioritise is part of the assessment.
+- Bonus items are genuinely optional and are there to give you flexibility, not pressure.
+- We care most about your **approach**: how you frame the problem, make assumptions, prioritise, and communicate trade-offs.
+- When your timebox ends, stop. Add a short note on what you would do next with more time.
+- If setup or tooling issues get in the way, tell us what happened — environment friction is not the exercise.
+- If anything in the brief is unclear, reply with questions — we’re happy to clarify.
 
 ---
 
@@ -19,7 +22,9 @@ Welcome to the Jaffle Shop Data Engineering technical exercise! This document ou
 
 **Target Roles:** Data Engineer, Senior Data Engineer
 
-**Time Estimate:** 3-5 hours (all levels)
+**Time estimate:**
+- 2–3 hours for Level 1 and a subset of later challenges
+- 3–5 hours to work through most of the exercise end-to-end
 
 **Prerequisites:**
 - Familiarity with `dbt` and SQL
@@ -45,7 +50,13 @@ Current state:
 
 ## Challenge Structure
 
-Start with Level 1. After that, pick the area that best shows your strengths. Some challenges build on others; if you skip ahead, mock inputs as needed and explain your assumptions.
+Start with **Level 1**. After that, work through the areas that best show your strengths.
+
+Some challenges build on others. If you skip ahead, mock inputs as needed and clearly explain your assumptions.
+
+For senior candidates, we’re less interested in perfect completeness and more interested in how you prioritise, structure, and connect the different parts of the system. Completing more of the exercise gives us more surface area for discussion, but depth of thinking matters more than polish.
+
+*Expected outputs apply only to the challenges you choose to complete.*
 
 ---
 
@@ -54,8 +65,6 @@ Start with Level 1. After that, pick the area that best shows your strengths. So
 > **This is the baseline expectation.** Please complete both challenges in this level.
 
 ## Challenge 1.1: Data Quality - Deduplication Using CTEs and Window Functions
-
-**Difficulty:** Beginner-Intermediate
 
 **Objective:** Identify and remove duplicate records in seed data using SQL
 
@@ -90,8 +99,6 @@ The raw seed data contains intentional duplicates to simulate real-world data qu
 
 ## Challenge 1.2: Complex SQL - Regex Pattern Matching
 
-**Difficulty:** Beginner-Intermediate
-
 **Objective:** Extract data using regular expressions (to be unit tested later)
 
 > **Note:** We've provided schema definitions in `models/silver/silver_models.yml` that describe the expected columns and tests for `stg_products_parsed`. Your task is to implement the SQL model that satisfies these contracts.
@@ -114,8 +121,6 @@ Product SKUs follow a pattern: `[CATEGORY]-[NUMBER]` (e.g., `JAF-001`, `BEV-002`
 # LEVEL 2: ARCHITECTURE & ADVANCED dbt (Medallion Pattern)
 
 ## Challenge 2.1: Medallion Architecture & Project Tagging
-
-**Difficulty:** Intermediate
 
 **Objective:** Configure the project for Medallion architecture using `dbt_project.yml` configuration
 
@@ -146,8 +151,6 @@ The medallion architecture (Bronze/Silver/Gold) is partially configured in `dbt_
 
 ## Challenge 2.2: Incremental Materialisation
 
-**Difficulty:** Intermediate
-
 **Objective:** Implement an incremental model for efficiency
 
 **Background:**
@@ -172,8 +175,6 @@ As data grows, full refreshes become too slow. We need to process only new or ch
 ---
 
 ## Challenge 2.3: Surrogate Key Macro Implementation
-
-**Difficulty:** Intermediate
 
 **Objective:** Build a reusable macro for generating surrogate keys without hashing
 
@@ -215,8 +216,6 @@ Your organisation requires surrogate keys that are human-readable and debuggable
 
 ## Challenge 3.1: Implement dbt Contracts
 
-**Difficulty:** Intermediate-Advanced
-
 **Objective:** Define and enforce data contracts for Gold layer models
 
 **Background:**
@@ -240,8 +239,6 @@ Data contracts ensure that downstream consumers (BI tools, APIs) have guaranteed
 ---
 
 ## Challenge 3.2: Unit Tests for Logic
-
-**Difficulty:** Advanced
 
 **Objective:** Add dbt unit tests to validate your Regex parsing logic
 
@@ -271,8 +268,6 @@ In Challenge 1.2, you wrote a regex to parse SKUs. Now, we need to guarantee thi
 # LEVEL 4: ADVANCED SQL & DATA EXTRACTION
 
 ## Challenge 4.1: JSON Extraction from Nested Audit Logs
-
-**Difficulty:** Advanced
 
 **Objective:** Extract and analyse data from JSON-embedded audit logs
 
@@ -346,8 +341,6 @@ The `raw_order_audit_log` seed contains order audit events in JSON format. Each 
 
 ## Challenge 5.1: SQL-Based Data Quality Test
 
-**Difficulty:** Intermediate
-
 **Objective:** Build a SQL-based test to validate complex business rules
 
 **Background:**
@@ -404,8 +397,6 @@ Beyond generic tests (not_null, unique), complex business rules require custom v
 ---
 
 ## Challenge 5.2: BI Reporting (Core + Bonus)
-
-**Difficulty:** Intermediate
 
 **Objective:** Create a basic BI visualisation to demonstrate end-to-end data delivery
 
