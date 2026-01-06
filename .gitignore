@@ -17,3 +17,5 @@ profiles.yml
 __pycache__
 
 *.duckdb
+temp/
+tmp/
